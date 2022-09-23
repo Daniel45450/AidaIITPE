@@ -56,5 +56,6 @@ int main(int argc, char **argv)
 
 	list<int> resultado;
     dfs_forest(g, 1, resultado);
+    bfs_forest(g, 1, resultado);
 	return 0;
 }
