@@ -50,13 +50,22 @@ template <typename C> void bfs_forest(const Grafo<C> & grafo, list<int> & orden)
 template <typename C> bfs(const Grafo<C> & grafo, int origen, list<int> & orden, set<int> & visitados)
 {
     orden.push_back(origen);
+    visitados.insert(origen);
+    list<int> fila;
+    fila.push_back(origen);
     list<typename Grafo<C>::Arco> adyacentes;
-    grafo.devolver_adyacentes(origen, adyacentes);
-    typename list<typename Grafo<C>::Arco>::iterator it_adyacentes = adyacentes.begin();
-    while(it_adyacentes != adyacentes.end()) {
-        orden.push_back(it_adyacentes->devolver_adyacente());
-        visitados.insert(it_adyacentes->devolver_adyacente());
-        it_adyacentes++;
+    while(!fila.empty()) {
+        grafo.devolver_adyacentes(*fila.rbegin(), adyacentes);
+        typename list<typename Grafo<C>::Arco>::iterator it_adyacentes = adyacentes.begin();
+        while(it_adyacentes != adyacentes.end()) {
+            if(visitados.find(it_adyacentes->devolver_adyacente()) == visitados.end()) {
+                orden.push_back(it_adyacentes->devolver_adyacente());
+                visitados.insert(it_adyacentes->devolver_adyacente());
+                fila.push_back(it_adyacentes->devolver_adyacente());
+            }
+            it_adyacentes++;
+        }
+        fila.pop_front();
     }
 }
 
