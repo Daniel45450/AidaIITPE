@@ -54,8 +54,14 @@ int main(int argc, char **argv)
 	cout << "Estructura del grafo:\n" << g << "\n";
 
 
-	list<int> resultado;
-    dfs_forest(g, 1, resultado);
-    bfs_forest(g, 1, resultado);
+	list<int> orden;
+    //dfs_forest(g, orden);
+    bfs_forest(g, orden);
+    list<int>::iterator it_orden = orden.begin();
+    while(it_orden != orden.end()) {
+        cout << *it_orden << " ";
+        it_orden++;
+    }
+
 	return 0;
 }
