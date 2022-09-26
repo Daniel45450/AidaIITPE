@@ -52,20 +52,20 @@ template <typename C> bfs(const Grafo<C> & grafo, int origen, list<int> & orden,
     orden.push_back(origen);
     visitados.insert(origen);
     list<int> fila;
-    fila.push_back(origen);
+    fila.push_back(origen); // agrego a la fila para controlar el orden
     list<typename Grafo<C>::Arco> adyacentes;
     while(!fila.empty()) {
-        grafo.devolver_adyacentes(*fila.rbegin(), adyacentes);
+        grafo.devolver_adyacentes(*fila.begin(), adyacentes); //tengo que recuperar el primer elemento que entro y sacarlo para respetar la estructura de fila
         typename list<typename Grafo<C>::Arco>::iterator it_adyacentes = adyacentes.begin();
         while(it_adyacentes != adyacentes.end()) {
-            if(visitados.find(it_adyacentes->devolver_adyacente()) == visitados.end()) {
+            if(visitados.find(it_adyacentes->devolver_adyacente()) == visitados.end()) { // si no explore ese vertice lo exploro
                 orden.push_back(it_adyacentes->devolver_adyacente());
                 visitados.insert(it_adyacentes->devolver_adyacente());
-                fila.push_back(it_adyacentes->devolver_adyacente());
+                fila.push_back(it_adyacentes->devolver_adyacente()); //agrego al final para respetar la prioridad en la fila
             }
             it_adyacentes++;
         }
-        fila.pop_front();
+        fila.pop_front(); // elimino el primer elemento
     }
 }
 
