@@ -69,7 +69,42 @@ template <typename C> bfs(const Grafo<C> & grafo, int origen, list<int> & orden,
     }
 }
 
-template <typename C> void caminos(const Grafo<C> & grafo, int origen, int destino, int longitud, list<list<int> > & caminos);
+template <typename C> void dfs_caminos(const Grafo<C> & g, int origen, int destino, int limite, list<int> & camino, list<list<int>> & caminos, set<int> & visitados)
+{
+    camino.push_back(origen);
+    visitados.insert(origen);
+    if(origen == destino) {
+        caminos.push_back(camino);
+    } else
+    {
+        list<typename Grafo<C>::Arco> adyacentes;
+        g.devolver_adyacentes(origen, adyacentes);
+        typename list<typename Grafo<C>::Arco>::iterator it_adyacentes = adyacentes.begin();
+        while(it_adyacentes != adyacentes.end()) {
+            if(visitados.find(it_adyacentes->devolver_adyacente()) == visitados.end()) {
+                dfs_caminos(g, it_adyacentes->devolver_adyacente(), destino, limite, camino, caminos, visitados);
+            }
+            it_adyacentes++;
+        }
+    }
+    visitados.erase(origen);
+    camino.pop_back();
+}
+
+template <typename C> void caminos(const Grafo<C> & grafo, int origen, int destino, int limite, list<list<int> > & caminos)
+{
+    list<int> camino;
+    list<int> vertices;
+    set<int> visitados;
+    grafo.devolver_vertices(vertices);
+    list<int>::iterator it_vertices = vertices.begin();
+    while(it_vertices != vertices.end()) {
+        dfs_caminos(grafo, origen, destino, limite, camino, caminos, visitados);
+        it_vertices++;
+    }
+}
+
 
 template void dfs_forest<int>(const Grafo<int> & grafo, list<int> & orden);
 template void bfs_forest<int>(const Grafo<int> & grafo, list<int> & orden);
+template void caminos<int>(const Grafo<int> & grafo, int origen, int destino, int limite, list<list<int>> & caminos);

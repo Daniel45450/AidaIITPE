@@ -56,12 +56,26 @@ int main(int argc, char **argv)
 
 	list<int> orden;
     //dfs_forest(g, orden);
-    bfs_forest(g, orden);
-    list<int>::iterator it_orden = orden.begin();
-    while(it_orden != orden.end()) {
+    //bfs_forest(g, orden);
+    list<list<int>> lista_caminos;
+    caminos(g, 1, 6, 2, lista_caminos);
+    //list<int>::iterator it_orden = orden.begin();
+    /*while(it_orden != orden.end()) {
         cout << *it_orden << " ";
         it_orden++;
-    }
+    }*/
 
+    list<list<int>>::iterator it_lista = lista_caminos.begin();
+    list<int>::iterator it_camino;
+    while(it_lista != lista_caminos.end()) {
+        cout << "camino: " << endl;
+        it_camino = it_lista->begin();
+        while(it_camino != it_lista->end()) {
+            cout << *it_camino << " ";
+            it_camino++;
+        }
+        cout << "\n";
+        it_lista++;
+    }
 	return 0;
 }
