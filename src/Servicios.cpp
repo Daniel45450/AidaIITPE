@@ -5,28 +5,36 @@
 
 
 template <typename C> void dfs_forest(const Grafo<C> & grafo, list<int> & orden)
+    /*
+      se consulta si cada vertice es visitado O(vlog(v)) y por c/u se llama a dfs resultando en
+      O(velog(v)^2)
+    */
 {
     set<int> visitados;
     list<int> vertices;
-    grafo.devolver_vertices(vertices);
+    grafo.devolver_vertices(vertices); //O(v)
     list<int>::iterator it_vertices = vertices.begin();
-    while(it_vertices != vertices.end()) {
-        if(visitados.find(*it_vertices) == visitados.end()) { //no esta visitado a si q llamo a dfs
-           dfs(grafo, *it_vertices, orden, visitados);
+    while(it_vertices != vertices.end()) { //O(v)
+        if(visitados.find(*it_vertices) == visitados.end()) { // O(log(v))//no esta visitado a si q llamo a dfs
+           dfs(grafo, *it_vertices, orden, visitados); //O(elog(v))
         }
         it_vertices++;
     }
 }
 
 template <typename C> void dfs(const Grafo<C> & grafo, int origen, list<int> & orden, set<int> & visitados)
+/*
+    O(elog(v)): en el peor de los casos se recorren todos los arcos del grafo y por cada uno se comprueba si fue visitado el vertice adyacente,
+     el metodo find() de set pertenece a O(log(v)), ya que en el peor caso tendra todo los vertices almacenados
+*/
 {
     orden.push_back(origen);
     visitados.insert(origen);
     list<typename Grafo<C>::Arco> adyacentes;
-    grafo.devolver_adyacentes(origen, adyacentes);
+    grafo.devolver_adyacentes(origen, adyacentes); //O(e) e= arcos
     typename list<typename Grafo<C>::Arco>::iterator it_ady = adyacentes.begin();
-    while(it_ady != adyacentes.end()) {
-        if(visitados.find(it_ady->devolver_adyacente()) == visitados.end()) {
+    while(it_ady != adyacentes.end()) { //O(e)
+        if(visitados.find(it_ady->devolver_adyacente()) == visitados.end()) { //O(log(v))
             dfs(grafo, it_ady->devolver_adyacente(), orden, visitados);
         }
         it_ady++;

@@ -114,19 +114,27 @@ template<typename C>const C& Grafo<C>::costo_arco(int origen, int destino) const
 }
 
 template<typename T> void Grafo<T>::devolver_vertices(list<int>& vertices) const
+    /*
+        O(v): hace un recorrido por todas las keys del map
+        v = vertices
+    */
 {
     typename map<int, list<Arco>>::const_iterator it_vertices = this->vertices.begin();
     while(it_vertices != this->vertices.end()) {
-        vertices.push_back(it_vertices->first);
+        vertices.push_back(it_vertices->first); //o(1)
         it_vertices++;
     }
 }
 
 template<typename T> void Grafo<T>::devolver_adyacentes(int origen, list<Arco>& adyacentes) const
+/*
+    O(e): por definicion en la liberia, el operador = tiene complejidad lineal, el peor caso es tener un grafo fuertemente conexo
+    entonces e representa el conjunto de todos los arcos.
+*/
 {
     typename map<int, list<Arco>>::const_iterator it_vertices = this->vertices.find(origen);
 
-    adyacentes = it_vertices->second;
+    adyacentes = it_vertices->second; // O(e)
 }
 
 template<typename T>void Grafo<T>::agregar_vertice(int vertice)
