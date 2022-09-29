@@ -21,6 +21,7 @@ template <typename C> void dfs_forest(const Grafo<C> & grafo, list<int> & orden)
 template <typename C> void dfs(const Grafo<C> & grafo, int origen, list<int> & orden, set<int> & visitados)
 {
     orden.push_back(origen);
+    visitados.insert(origen);
     list<typename Grafo<C>::Arco> adyacentes;
     grafo.devolver_adyacentes(origen, adyacentes);
     typename list<typename Grafo<C>::Arco>::iterator it_ady = adyacentes.begin();
@@ -30,7 +31,6 @@ template <typename C> void dfs(const Grafo<C> & grafo, int origen, list<int> & o
         }
         it_ady++;
     }
-    visitados.insert(origen);
 }
 
 template <typename C> void bfs_forest(const Grafo<C> & grafo, list<int> & orden)
@@ -69,7 +69,7 @@ template <typename C> bfs(const Grafo<C> & grafo, int origen, list<int> & orden,
     }
 }
 
-/*  NO FUNCIONA SI HAY CICLOS, INTENTO SOLUCION NUEVA CON BACKTRACKING
+//  NO FUNCIONA SI HAY CICLOS, INTENTO SOLUCION NUEVA CON BACKTRACKING
 template <typename C> void dfs_caminos(const Grafo<C> & g, int origen, int destino, int limite, list<int> & camino, list<list<int>> & caminos, set<int> & visitados)
 {
     camino.push_back(origen);
@@ -90,7 +90,7 @@ template <typename C> void dfs_caminos(const Grafo<C> & g, int origen, int desti
     }
     visitados.erase(origen);
     camino.pop_back();
-}*/
+}
 
 template <typename C> backtracking_caminos(const Grafo<C> & g, int origen, int destino, int limite, int long_actual, list<int> camino, list<list<int>> & caminos)
 {
@@ -113,7 +113,7 @@ template <typename C> backtracking_caminos(const Grafo<C> & g, int origen, int d
 template <typename C> void caminos(const Grafo<C> & grafo, int origen, int destino, int limite, list<list<int> > & caminos)
 {
     list<int> camino;
-    //set<int> visitados;
+    set<int> visitados;
     //dfs_caminos(grafo, origen, destino, limite, camino, caminos, visitados);
     backtracking_caminos(grafo, origen, destino, limite, 0, camino, caminos);
 }
