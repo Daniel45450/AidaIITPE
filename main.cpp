@@ -38,17 +38,25 @@ int main(int argc, char **argv)
 	g.agregar_vertice(3);
 	g.agregar_vertice(4);
 	g.agregar_vertice(5);
-	g.agregar_vertice(6);
-	g.agregar_vertice(7);
+	//g.agregar_vertice(6);
+	//g.agregar_vertice(7);
 
 	// Luego los arcos
-	g.agregar_arco(1, 2, 1);
-	g.agregar_arco(1, 3, 1);
+	g.agregar_arco(1, 5, 1);
 	g.agregar_arco(1, 4, 1);
-	g.agregar_arco(2, 6, 2);
-	g.agregar_arco(3, 5, 3);
-	g.agregar_arco(4, 7, 4);
-	g.agregar_arco(5, 6, 5);
+	g.agregar_arco(2, 5, 1);
+	g.agregar_arco(2, 3, 2);
+	g.agregar_arco(3, 4, 3);
+	g.agregar_arco(5, 2, 4);
+	g.agregar_arco(5, 4, 5);
+	/*g.agregar_arco(1, 2, 1);
+	g.agregar_arco(2, 5, 1);
+	g.agregar_arco(2, 3, 1);
+	g.agregar_arco(3, 6 , 1);
+	g.agregar_arco(4, 5, 1);
+	g.agregar_arco(5, 6, 1);
+	g.agregar_arco(6, 7, 1);
+	g.agregar_arco(5, 3, 1);*/
 
 	// Mostramos el grafo
 	cout << "Estructura del grafo:\n" << g << "\n";
@@ -58,7 +66,7 @@ int main(int argc, char **argv)
     //dfs_forest(g, orden);
     //bfs_forest(g, orden);
     list<list<int>> lista_caminos;
-    caminos(g, 1, 6, 2, lista_caminos);
+    caminos(g, 1, 4, 5, lista_caminos);
     //list<int>::iterator it_orden = orden.begin();
     /*while(it_orden != orden.end()) {
         cout << *it_orden << " ";

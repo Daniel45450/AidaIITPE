@@ -69,6 +69,7 @@ template <typename C> bfs(const Grafo<C> & grafo, int origen, list<int> & orden,
     }
 }
 
+/*  NO FUNCIONA SI HAY CICLOS, INTENTO SOLUCION NUEVA CON BACKTRACKING
 template <typename C> void dfs_caminos(const Grafo<C> & g, int origen, int destino, int limite, list<int> & camino, list<list<int>> & caminos, set<int> & visitados)
 {
     camino.push_back(origen);
@@ -89,19 +90,32 @@ template <typename C> void dfs_caminos(const Grafo<C> & g, int origen, int desti
     }
     visitados.erase(origen);
     camino.pop_back();
+}*/
+
+template <typename C> backtracking_caminos(const Grafo<C> & g, int origen, int destino, int limite, int long_actual, list<int> camino, list<list<int>> & caminos)
+{
+    if(long_actual <= limite) {
+        camino.push_back(origen);
+        if(origen == destino) {
+            caminos.push_back(camino);
+        } else {
+            list<typename Grafo<C>::Arco> adyacentes;
+            g.devolver_adyacentes(origen, adyacentes);
+            typename list<typename Grafo<C>::Arco>::iterator it_adyacentes = adyacentes.begin();
+            while(it_adyacentes != adyacentes.end()) {
+                backtracking_caminos(g, it_adyacentes->devolver_adyacente(), destino, limite, long_actual +1, camino, caminos);
+                it_adyacentes++;
+            }
+        }
+    }
 }
 
 template <typename C> void caminos(const Grafo<C> & grafo, int origen, int destino, int limite, list<list<int> > & caminos)
 {
     list<int> camino;
-    list<int> vertices;
-    set<int> visitados;
-    grafo.devolver_vertices(vertices);
-    list<int>::iterator it_vertices = vertices.begin();
-    while(it_vertices != vertices.end()) {
-        dfs_caminos(grafo, origen, destino, limite, camino, caminos, visitados);
-        it_vertices++;
-    }
+    //set<int> visitados;
+    //dfs_caminos(grafo, origen, destino, limite, camino, caminos, visitados);
+    backtracking_caminos(grafo, origen, destino, limite, 0, camino, caminos);
 }
 
 
