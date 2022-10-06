@@ -63,7 +63,7 @@ public:
 	void agregar_arco(int origen, int destino, const C & costo); //O(max(log(n), e)
 
 	// POST CONDICION: !existeArco(origen, destino)
-	void eliminar_arco(int origen, int destino); //O(e)
+	void eliminar_arco(int origen, int destino); //O(max(log(n), e)
 
 	void vaciar(); //O(ne)
 

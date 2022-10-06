@@ -6,17 +6,17 @@
 
 template <typename C> void dfs_forest(const Grafo<C> & grafo, list<int> & orden)
     /*
-      se consulta si cada vertice es visitado O(vlog(v)) y por c/u se llama a dfs resultando en
-      O(velog(v)^2)
+      se consulta si cada vertice es visitado O(nlog(n)) y por c/u se llama a dfs resultando en
+      O(nelog(n)^2)
     */
 {
     set<int> visitados;
     list<int> vertices;
-    grafo.devolver_vertices(vertices); //O(v)
+    grafo.devolver_vertices(vertices); //O(n)
     list<int>::iterator it_vertices = vertices.begin();
     while(it_vertices != vertices.end()) { //O(v)
-        if(visitados.find(*it_vertices) == visitados.end()) { // O(log(v))//no esta visitado a si q llamo a dfs
-           dfs(grafo, *it_vertices, orden, visitados); //O(elog(v))
+        if(visitados.find(*it_vertices) == visitados.end()) { // O(log(n))//no esta visitado a si q llamo a dfs
+           dfs(grafo, *it_vertices, orden, visitados); //O(elog(n))
         }
         it_vertices++;
     }
@@ -24,17 +24,17 @@ template <typename C> void dfs_forest(const Grafo<C> & grafo, list<int> & orden)
 
 template <typename C> void dfs(const Grafo<C> & grafo, int origen, list<int> & orden, set<int> & visitados)
 /*
-    O(elog(v)): en el peor de los casos se recorren todos los arcos del grafo y por cada uno se comprueba si fue visitado el vertice adyacente,
-     el metodo find() de set pertenece a O(log(v)), ya que en el peor caso tendra todo los vertices almacenados
+    O(elog(n)): en el peor de los casos se recorren todos los arcos del grafo y por cada uno se comprueba si fue visitado el vertice adyacente,
+     el metodo find() de set pertenece a O(log(n)), ya que en el peor caso tendra todo los vertices almacenados
 */
 {
     orden.push_back(origen);
     visitados.insert(origen);
     list<typename Grafo<C>::Arco> adyacentes;
-    grafo.devolver_adyacentes(origen, adyacentes); //O(e) e= arcos
+    grafo.devolver_adyacentes(origen, adyacentes); //O(max(log(n), e) e= arcos
     typename list<typename Grafo<C>::Arco>::iterator it_ady = adyacentes.begin();
     while(it_ady != adyacentes.end()) { //O(e)
-        if(visitados.find(it_ady->devolver_adyacente()) == visitados.end()) { //O(log(v))
+        if(visitados.find(it_ady->devolver_adyacente()) == visitados.end()) { //O(log(n))
             dfs(grafo, it_ady->devolver_adyacente(), orden, visitados);
         }
         it_ady++;
@@ -42,6 +42,10 @@ template <typename C> void dfs(const Grafo<C> & grafo, int origen, list<int> & o
 }
 
 template <typename C> void bfs_forest(const Grafo<C> & grafo, list<int> & orden)
+/*
+    Recorro todo los vertices O(n) * O(log(n)) comprobar si los vertices estan visitados * O(elog(n)) BFS
+    RESULTA EN O(nelog(n))^2
+*/
 {
     set<int> visitados;
     list<int> vertices;
@@ -56,17 +60,20 @@ template <typename C> void bfs_forest(const Grafo<C> & grafo, list<int> & orden)
 }
 
 template <typename C> bfs(const Grafo<C> & grafo, int origen, list<int> & orden, set<int> & visitados)
+/*
+    O(elog(n)) por cada vertice recorro sus adyacentes y compruebo si ya los visite.
+*/
 {
-    orden.push_back(origen);
-    visitados.insert(origen);
+    orden.push_back(origen); //O(1)
+    visitados.insert(origen); //O(log(n))
     list<int> fila;
-    fila.push_back(origen); // agrego a la fila para controlar el orden
+    fila.push_back(origen); // agrego a la fila para controlar el orden //O(1)
     list<typename Grafo<C>::Arco> adyacentes;
     while(!fila.empty()) {
         grafo.devolver_adyacentes(*fila.begin(), adyacentes); //tengo que recuperar el primer elemento que entro y sacarlo para respetar la estructura de fila
         typename list<typename Grafo<C>::Arco>::iterator it_adyacentes = adyacentes.begin();
-        while(it_adyacentes != adyacentes.end()) {
-            if(visitados.find(it_adyacentes->devolver_adyacente()) == visitados.end()) { // si no explore ese vertice lo exploro
+        while(it_adyacentes != adyacentes.end()) { //O(e)
+            if(visitados.find(it_adyacentes->devolver_adyacente()) == visitados.end()) { // si no explore ese vertice lo exploro //O(log(n))
                 orden.push_back(it_adyacentes->devolver_adyacente());
                 visitados.insert(it_adyacentes->devolver_adyacente());
                 fila.push_back(it_adyacentes->devolver_adyacente()); //agrego al final para respetar la prioridad en la fila

@@ -206,7 +206,7 @@ template<typename C> void Grafo<C>::agregar_arco(int origen, int destino, const 
 
 template<typename T> void Grafo<T>::eliminar_arco(int origen, int destino)
  //Busco el vertice en un tiempo 0(log(n)) luego hago un remove en una lista, que tiene complejidad O(e), ya que recorre todo los arcos, si es el peor caso tiene e arcos
-    // resulta en O(e)
+    // resulta en O(max(log(n), e))
 {
     typename map<int,list<Arco>>::iterator it_vertices = this->vertices.find(origen); //log(n)
     Arco a(destino, 0);
